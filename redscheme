@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require "./red_scheme"
+puts RedScheme.eval(RedScheme.parse(ARGV[0]))
