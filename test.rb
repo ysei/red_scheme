@@ -33,4 +33,15 @@ assert 9, <<-EXPRESSION
     (+ (fun 1) (fun 2))))
 EXPRESSION
 
+assert 3, <<-EXPRESSION
+(condition ((equal? 1 3) 1)
+           ((equal? 2 3) 2)
+           ((equal? 3 3) 3))
+EXPRESSION
+
+assert 3, <<-EXPRESSION
+(condition ((equal? 1 3) 1)
+           ((equal? 2 3) 2)
+           (t 3))
+EXPRESSION
 print "\n"

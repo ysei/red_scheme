@@ -9,7 +9,8 @@ module RedScheme
       Scope.new(table={}, self)
     end
 
-    ROOT = new(:nil => Nil.instance,
+    ROOT = new(:t => true,
+               :nil => Nil.instance,
                :car => lambda{|arguments, scope|
                  arguments_length = arguments.length
                  raise "car: wrong number of arguments (#{arguments_length} for 1)" if arguments_length != 1
@@ -43,6 +44,21 @@ module RedScheme
                  b = scope.eval(arguments.cdr.car)
 
                  a == b
+               },
+               :condition => lambda{|arguments, scope|
+                 predicate = arguments.car.car
+                 clause = arguments.car.cdr
+                 rest = arguments.cdr
+
+                 if scope.eval(predicate)
+                   clause.each do |expression|
+                     scope.eval(expression)
+                   end
+                 elsif rest.length > 0
+                   scope.find(:condition).call(rest, scope)
+                 else
+                   Nil.instance
+                 end
                },
                :quote => lambda{|arguments, scope|
                  arguments
